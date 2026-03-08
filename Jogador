@@ -1,0 +1,69 @@
+CREATE TABLE Jogador (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(100),
+    NumeroCamisa INT
+);
+
+DESCRIBE Jogador;
+
+ALTER TABLE Jogador ADD Altura DECIMAL(3,2);
+ALTER TABLE Jogador ADD DataNascimento DATE;
+
+DESCRIBE Jogador;
+
+DROP TABLE Jogador;
+
+SHOW TABLES;
+
+CREATE TABLE jogador (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(100),
+    NumeroCamisa INT,
+    Altura DECIMAL(3,2),
+    DataNascimento DATE
+);
+
+INSERT INTO Jogador (Nome, NumeroCamisa, Altura, DataNascimento) VALUES
+('A',10,1.80,'2000-05-10'),
+('B',9,1.79,'2000-05-09'),
+('C',8,1.78,'2000-05-08'),
+('D',7,1.77,'2000-05-07'),
+('E',6,1.76,'2000-05-06'),
+('F',5,1.75,'2000-05-05'),
+('G',4,1.74,'2000-05-04'),
+('H',3,1.73,'2000-05-03'),
+('I',2,1.72,'2000-05-02'),
+('J',1,1.71,'2000-05-01');
+
+TRUNCATE TABLE Jogador;
+
+ALTER TABLE Jogador MODIFY NumeroCamisa VARCHAR(3);
+
+ALTER TABLE Jogador ADD UNIQUE (NumeroCamisa);
+
+ALTER TABLE Jogador CHANGE DataNascimento data_nsc DATE;
+
+INSERT INTO Jogador (Nome, NumeroCamisa, Altura, DataNsc) VALUES
+('A',10,1.80,'2000-05-10'),
+('B',9,1.79,'2000-05-09'),
+('C',8,1.78,'2000-05-08'),
+('D',7,1.77,'2000-05-07'),
+('E',6,1.76,'2000-05-06'),
+('F',5,1.75,'2000-05-05'),
+('G',4,1.74,'2000-05-04'),
+('H',3,1.73,'2000-05-03'),
+('I',2,1.72,'2000-05-02'),
+('J',1,1.71,'2000-05-01');
+
+CREATE TABLE time (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(100)
+);
+
+ALTER TABLE Jogador ADD IDTime INT;
+
+ALTER TABLE Jogador ADD FOREIGN KEY (IDTime) REFERENCES time(id);
+
+ALTER TABLE Jogador DROP INDEX NumeroCamisa;
+
+ALTER TABLE Jogador ADD UNIQUE (NumeroCamisa, IDTime);
