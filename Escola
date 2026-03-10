@@ -1,0 +1,36 @@
+CREATE TABLE Aluno (
+	IDMatricula INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(254) NOT NULL,
+    Curso VARCHAR(254) NOT NULL,
+    Email VARCHAR(254) NOT NULL
+);
+CREATE TABLE Matricula (
+	IDMatricula INT PRIMARY KEY AUTO_INCREMENT,
+    IDAluno INT,
+    IDDisciplina INT,
+    Semestre INT,
+    FOREIGN KEY(IDAluno) REFERENCES Aluno (IDMatricula)
+);
+CREATE TABLE Disciplina (
+	IDDisciplina INT PRIMARY KEY AUTO_INCREMENT,
+	IDProfessor INT,
+    Nome VARCHAR(254) NOT NULL,
+    Cargo VARCHAR(254) NOT NULL,
+    FOREIGN KEY (IDProfessor) REFERENCES Matricula (IDMatricula)
+);
+CREATE TABLE Dispro (
+	IDProfessor INT PRIMARY KEY AUTO_INCREMENT,
+    IDDisciplina INT,
+    FOREIGN KEY (IDDisciplina) REFERENCES Disciplina (IDDisciplina)
+);
+CREATE TABLE Professor (
+	IDProfessor INT PRIMARY KEY AUTO_INCREMENT,
+    IDDisciplina INT,
+    Nome VARCHAR(254) NOT NULL,
+    AreaEspecializacao VARCHAR(254) NOT NULL,
+    FOREIGN KEY (IDDisciplina) REFERENCES Disciplina (IDDisciplina)
+);
+SELECT * FROM Aluno;
+SELECT * FROM Matricula;
+SELECT * FROM Disciplina;
+SELECT * FROM Professor;
