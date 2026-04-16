@@ -1,0 +1,45 @@
+CREATE DATABASE empresa;
+USE empresa;
+
+CREATE TABLE funcionario (
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ nome VARCHAR(50),
+ salario INT,
+ departamento VARCHAR(50)
+);
+
+INSERT INTO funcionario (nome, salario, departamento) VALUES
+('Carlos',3000,'TI'),
+('Maria',4500,'RH'),
+('João',5000,'TI'),
+('Ana',3500,'Financeiro'),
+('Pedro',2800,'RH');
+
+SELECT * FROM funcionario;
+
+SELECT COUNT(*) FROM funcionario;
+
+SELECT * FROM funcionario WHERE departamento='TI';
+
+SELECT COUNT(*) FROM funcionario WHERE departamento='TI';
+
+SELECT * FROM funcionario WHERE salario>4000;
+
+SELECT COUNT(*) FROM funcionario WHERE salario>4000;
+
+INSERT INTO funcionario (nome, salario, departamento)
+VALUES ('Juliana',4200,'TI');
+
+UPDATE funcionario SET salario=3500 WHERE nome='Carlos';
+
+UPDATE funcionario SET salario=salario*1.1 WHERE departamento='RH';
+
+DELETE FROM funcionario WHERE nome='Pedro';
+
+SELECT * FROM funcionario ORDER BY salario DESC;
+
+SELECT AVG(salario), MAX(salario), MIN(salario) FROM funcionario;
+
+UPDATE funcionario
+SET salario=salario*1.05
+WHERE departamento='TI' AND salario<4000;
