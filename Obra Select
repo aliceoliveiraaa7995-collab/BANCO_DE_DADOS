@@ -1,0 +1,39 @@
+-- Ver os dados com os relacionamentos (obra + grupo + serviços) 
+SELECT 
+    o.codigo_obra,
+    o.bdi_servico,
+    g.identificacao AS grupo,
+    g.descricao AS descricao_grupo,
+    s.identificacao AS codigo_servico,
+    s.tipo,
+    s.codigo,
+    s.descricao AS descricao_servico,
+    s.unidade,
+    s.quantidade,
+    s.valor_sem_bdi,
+    s.valor_com_bdi,
+    s.parcela
+FROM obras o
+INNER JOIN grupos_servicos g
+    ON g.obra_id = o.id
+INNER JOIN servicos s
+    ON s.grupo_id = g.id;
+-- Consultar apenas os serviços e valores    
+    SELECT 
+    identificacao,
+    descricao,
+    unidade,
+    valor_sem_bdi,
+    valor_com_bdi
+FROM servicos;
+-- Consultar serviços com valor maior que 10 mil
+SELECT *
+FROM servicos
+WHERE valor_com_bdi > 10000;
+-- Contar quantos serviços existem
+SELECT COUNT(*) AS quantidade_servicos
+FROM servicos;
+-- Somar o valor total dos serviços
+SELECT 
+    SUM(valor_com_bdi) AS total_com_bdi
+FROM servicos;
