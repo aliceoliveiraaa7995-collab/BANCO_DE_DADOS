@@ -1,11 +1,5 @@
 # ============================================================
 # PIPELINE SIMPLES: planilha da obra (Pasta5.xlsx) -> 3 CSVs
-# prontos para carregar no banco (obras, grupos_servicos, servicos)
-#
-# Como rodar:
-#   1. Coloque Pasta5.xlsx na mesma pasta deste script
-#   2. python3 pipeline_obra.py
-#   3. Os CSVs aparecem em saida_pipeline_obra/
 # ============================================================
 
 import re
@@ -23,8 +17,8 @@ PASTA_SAIDA.mkdir(exist_ok=True)
 RE_GRUPO = re.compile(r"^\d{3}-\d{3}$")
 
 # A planilha original tem um problema de acentuação: cada letra
-# acentuada foi trocada por outro caractere. Este mapa converte de
-# volta (ex.: "ADMINISTRA€ÇO" -> "ADMINISTRAÇÃO").
+# acentuada foi trocada por outro caractere. Esse mapa converte de
+# volts (ex.: "ADMINISTRA€ÇO" -> "ADMINISTRAÇÃO").
 MAPA_ACENTOS = {
     "€": "Ç", "Ç": "Ã", "µ": "Á", "\x90": "É", "Ö": "Í",
     "¶": "Â", "Ò": "Ê", "å": "Õ", "à": "Ó", "é": "Ú",
@@ -35,7 +29,7 @@ TABELA_ACENTOS = str.maketrans(MAPA_ACENTOS)
 
 
 def corrigir_texto(valor):
-    """Corrige a acentuação de uma célula de texto. Números passam direto."""
+    """Corrige a acentuação de uma célula de texto"""
     if not isinstance(valor, str):
         return valor
     texto = valor.translate(TABELA_ACENTOS)
@@ -44,8 +38,7 @@ def corrigir_texto(valor):
 
 
 def ler_planilha():
-    """Lê a Pasta5.xlsx célula por célula (linha 1 = cabeçalho da obra,
-    linha 2 = nomes das colunas, linha 3 em diante = dados)."""
+    """Lê a Pasta5.xlsx célula por célula"""
     wb = openpyxl.load_workbook(ARQUIVO_EXCEL, data_only=True)
     ws = wb[ABA]
 
@@ -61,7 +54,7 @@ def ler_planilha():
 
 
 def classificar_linha(row):
-    """Diz o que é cada linha: 'grupo', 'item' (serviço) ou 'outra' (descarta)."""
+    """Diz o que é cada linha"""
     if isinstance(row["descricao"], str) and row["descricao"].strip().upper().startswith("TOTAL"):
         return "outra"                     # linha de total (TOTAL ETAPA / TOTAL SUB-OBRA)
     if pd.notna(row["tipo"]):
@@ -79,7 +72,7 @@ def montar_tabelas(codigo_obra, bdi_servico, df):
     for coluna in ["identificacao", "tipo", "descricao", "unidade"]:
         df[coluna] = df[coluna].apply(corrigir_texto)
 
-    # garante que os números sejam números (evita erro de tipo no banco)
+    # garante que os números sejam númeroa
     df["codigo"] = pd.to_numeric(df["codigo"], errors="coerce").astype("Int64")
     for coluna in ["quantidade", "valor_sem_bdi", "valor_com_bdi", "parcela"]:
         df[coluna] = pd.to_numeric(df[coluna], errors="coerce")
