@@ -1,7 +1,6 @@
 -- ============================================================
 -- CARGA DA PLANILHA NO BANCO (PostgreSQL)
 -- ============================================================
-
 \copy obras (codigo_obra, bdi_servico) FROM 'saida_pipeline_obra/obras.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
 
 CREATE TEMP TABLE stg_grupos (
@@ -14,9 +13,6 @@ INSERT INTO grupos_servicos (obra_id, identificacao, descricao)
 SELECT (SELECT id FROM obras LIMIT 1), identificacao, descricao
 FROM stg_grupos;
 
-
--- 3) SERVIÇOS: carrega numa tabela temporária e depois insere,
---    buscando o grupo_id certo pela identificação do grupo
 CREATE TEMP TABLE stg_servicos (
     grupo_identificacao  VARCHAR(20),
     identificacao         VARCHAR(30),
@@ -39,7 +35,6 @@ FROM stg_servicos s
 JOIN grupos_servicos g ON g.identificacao = s.grupo_identificacao;
 
 
--- 4) Conferência final
 SELECT (SELECT COUNT(*) FROM obras)           AS total_obras,
        (SELECT COUNT(*) FROM grupos_servicos) AS total_grupos,
        (SELECT COUNT(*) FROM servicos)        AS total_servicos;
